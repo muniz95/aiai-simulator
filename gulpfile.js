@@ -22,8 +22,10 @@ function webserver() {
 function browserSync() {
   browsersync.init({
     server: {
-      baseDir: "./src"
-    }
+      baseDir: "./src",
+    },
+    port: 8080,
+    host: '0.0.0.0'
   });
 }
 
@@ -118,9 +120,9 @@ function clean() {
 }
 
 function watchFiles() {
-  gulp.watch("./src/*.scss", gulp.series(css, minifyCss)),
-  gulp.watch("./src/*.js", gulp.series(js, minifyJs)),
-  gulp.watch("./src/*.html", gulp.series(html, minifyHtml))
+  gulp.watch("./src/*.scss", gulp.series(css, minifyCss)).on("change", browsersync.reload),
+  gulp.watch("./src/*.js", gulp.series(js, minifyJs)).on("change", browsersync.reload),
+  gulp.watch("./src/*.html", gulp.series(html, minifyHtml)).on("change", browsersync.reload)
 }
 
 const build = gulp.series(
@@ -134,7 +136,7 @@ const build = gulp.series(
 
 const watch = gulp.parallel(watchFiles, browserSync);
 
-const mainTask = gulp.series(build, generateServiceWorker, webserver, watch);
+const mainTask = gulp.series(build, generateServiceWorker, watch);
 
 exports.clean = clean;
 exports.watch = watch;
