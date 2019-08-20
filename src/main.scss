@@ -1,0 +1,14 @@
+html, body, #app {
+    height: 100%;
+}
+
+#app {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#uva {
+    background-image: url("uva.png");
+    background-repeat: no-repeat;
+}

@@ -22,7 +22,7 @@ function webserver() {
 function browserSync() {
   browsersync.init({
     server: {
-      baseDir: "./src",
+      baseDir: "./build",
     },
     port: 8080,
     host: '0.0.0.0'
@@ -111,6 +111,17 @@ function minifyHtml(cb) {
   );
 }
 
+function copyImages(cb) {
+  console.log("========> Copiando imagens...");
+  pump(
+    [
+      gulp.src("./src/*.png"),
+      gulp.dest("./build")
+    ],
+    cb
+  );
+}
+
 function copyAssets() {
   gulp.src(["./assets/**/*"]).pipe(gulp.dest("./build/"));
 }
@@ -127,6 +138,7 @@ function watchFiles() {
 
 const build = gulp.series(
   clean,
+  copyImages,
   minifyHtml,
   minifyJs,
   minifyCss,
@@ -150,6 +162,7 @@ exports.minifyCss = minifyCss;
 exports.minifyHtml = minifyHtml;
 exports.minifyJs = minifyJs;
 exports.copyAssets = copyAssets;
+exports.copyImages = copyImages;
 exports.pwaify = pwaify;
 exports.generateServiceWorker = generateServiceWorker;
 exports.build = build;
