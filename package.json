@@ -5,6 +5,9 @@
   "main": "gulpfile.js",
   "scripts": {
     "start": "gulp",
+    "build": "gulp build",
+    "predeploy": "npm run build",
+    "deploy": "surge ./build -d https://aiai-simulator.surge.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -31,6 +34,7 @@
     "gulp-uglify-es": "^1.0.4",
     "pump": "^3.0.0",
     "run-sequence": "^2.2.1",
+    "surge": "^0.21.3",
     "sw-precache": "^5.2.1"
   }
 }

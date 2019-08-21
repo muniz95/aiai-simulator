@@ -122,6 +122,17 @@ function copyImages(cb) {
   );
 }
 
+function copySounds(cb) {
+  console.log("========> Copiando sons...");
+  pump(
+    [
+      gulp.src("./src/*.mp3"),
+      gulp.dest("./build")
+    ],
+    cb
+  );
+}
+
 function copyAssets() {
   gulp.src(["./assets/**/*"]).pipe(gulp.dest("./build/"));
 }
@@ -131,14 +142,15 @@ function clean() {
 }
 
 function watchFiles() {
-  gulp.watch("./src/*.scss", gulp.series(css, minifyCss)).on("change", browsersync.reload),
-  gulp.watch("./src/*.js", gulp.series(js, minifyJs)).on("change", browsersync.reload),
-  gulp.watch("./src/*.html", gulp.series(html, minifyHtml)).on("change", browsersync.reload)
+  gulp.watch("./src/*.scss", gulp.series(minifyCss)).on("change", browsersync.reload),
+  gulp.watch("./src/*.js", gulp.series(minifyJs)).on("change", browsersync.reload),
+  gulp.watch("./src/*.html", gulp.series(minifyHtml)).on("change", browsersync.reload)
 }
 
 const build = gulp.series(
   clean,
   copyImages,
+  copySounds,
   minifyHtml,
   minifyJs,
   minifyCss,
@@ -163,6 +175,7 @@ exports.minifyHtml = minifyHtml;
 exports.minifyJs = minifyJs;
 exports.copyAssets = copyAssets;
 exports.copyImages = copyImages;
+exports.copySounds = copySounds;
 exports.pwaify = pwaify;
 exports.generateServiceWorker = generateServiceWorker;
 exports.build = build;
