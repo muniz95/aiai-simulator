@@ -13,13 +13,8 @@ window.onload = () => {
     img.ontouchstart = (ev) => {
       ev.preventDefault();
       ev.stopImmediatePropagation();
-      try {
-        aiai.play();
-        navigator.vibrate(1000);
-      } catch (error) {
-        aiai.play();
-        navigator.vibrate(1000);
-      }
+      aiai.play();
+      navigator.vibrate(1000);
     }
     img.ontouchend = (ev) => {
       navigator.vibrate();
