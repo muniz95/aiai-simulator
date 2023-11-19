@@ -18,23 +18,36 @@ window.onload = () => {
     img.ontouchstart = (ev) => {
       ev.preventDefault();
       ev.stopImmediatePropagation();
-      sound.play();
+      const playPromise = sound.play();
+      if (playPromise !== undefined) {
+        playPromise.then(_ => {
+          // Automatic playback started!
+          // Show playing UI.
+        })
+        .catch(error => {
+          // Auto-play was prevented
+          // Show paused UI.
+        });
+      }
       navigator.vibrate(1000);
-    }
-    img.ontouchend = (ev) => {
-      navigator.vibrate(0);
-    }
-    img.ontouchcancel = (ev) => {
-      navigator.vibrate(0);
     }
 
     return img;
+  }
+
+  const setFogFadeout = () => {
+    document
+      .getElementById("fog")
+      .addEventListener("click", ({ target }) => {
+        target.classList.add("hidden");
+      });
   }
 
   const buildShockingElement = () => {
     document
       .getElementById("app")
       .insertAdjacentElement("beforeend", buildGrapeImage());
+    setFogFadeout();
   }
 
   const buildIncompatibleBrowser = () => {
