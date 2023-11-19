@@ -1,3 +1,7 @@
+import uva from './uva.png';
+import aiai from './aiai.mp3';
+import './main.scss';
+
 window.onload = () => {
   const isMobile = () => {
     const mobileUAs = ["android", "ios"];
@@ -5,33 +9,41 @@ window.onload = () => {
     return new RegExp(mobileUAs.join("|")).test(currentUserAgent)
   }
 
-  const buildShockingElement = () => {
-    const img = document.createElement("img");
-    const aiai = new Audio("aiai.mp3");
-    img.src = "uva.png";
-    img.alt = "Aqui do lado, Pederneiras";
+  const buildGrapeImage = () => {
+    const img = new Image();
+    const sound = new Audio(aiai);
+
+    img.src = uva;
+    img.alt = 'Aqui do lado, Pederneiras';
     img.ontouchstart = (ev) => {
       ev.preventDefault();
       ev.stopImmediatePropagation();
-      aiai.play();
+      sound.play();
       navigator.vibrate(1000);
     }
     img.ontouchend = (ev) => {
-      navigator.vibrate();
+      navigator.vibrate(0);
     }
     img.ontouchcancel = (ev) => {
-      navigator.vibrate();
+      navigator.vibrate(0);
     }
-    document.getElementById("app").insertAdjacentElement("beforeend", img);
+
+    return img;
   }
+
+  const buildShockingElement = () => {
+    document
+      .getElementById("app")
+      .insertAdjacentElement("beforeend", buildGrapeImage());
+  }
+
   const buildIncompatibleBrowser = () => {
-    document.getElementById("app")
+    document
+      .getElementById("app")
       .insertAdjacentText("beforeend", "Este app só funciona em navegadores mobile.");
   }
 
-  if(isMobile()) {
-    buildShockingElement();
-  } else {
-    buildIncompatibleBrowser();
-  }
+  isMobile()
+    ? buildShockingElement()
+    : buildIncompatibleBrowser();
 };
